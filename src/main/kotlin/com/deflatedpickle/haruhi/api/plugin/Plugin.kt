@@ -62,18 +62,4 @@ annotation class Plugin(
      * The config for this plugin
      */
     val settings: KClass<*> = Nothing::class
-) {
-    companion object {
-        @Suppress("unused")
-        val comparator: Comparator<Plugin> = Comparator<Plugin> { a, b ->
-            if (a.dependencies.contains(b.value) || a.type != PluginType.CORE_API) {
-                if (b.dependencies.contains(a.value)) {
-                    throw IllegalStateException("Circular dependency")
-                }
-                return@Comparator 1
-            }
-            return@Comparator 0
-        }.thenComparing(Plugin::type).thenComparing(
-            Plugin::value)
-    }
-}
+)
