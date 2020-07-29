@@ -14,6 +14,7 @@ import kotlin.reflect.KClass
  */
 @Suppress("unused")
 @Target(AnnotationTarget.CLASS)
+// TODO: Write an accumulating system to dock components next to each other
 annotation class Plugin(
     /**
      * The name/id of the plugin
@@ -22,6 +23,7 @@ annotation class Plugin(
      *
      * Example: pixel_grid
      */
+    // TODO: Plugin IDs could be guessed by using the lowercased name of the object they're attached to
     val value: String,
     /**
      * The author of the plugin
@@ -36,9 +38,7 @@ annotation class Plugin(
      */
     val version: String,
     /**
-     * The description of the plugin
-     *
-     * This will be chopped at 60 characters for the short description.
+     * The full description of the plugin as a HTML string
      */
     val description: String = "<br>",
     /**
@@ -50,9 +50,12 @@ annotation class Plugin(
      */
     val type: PluginType = PluginType.API,
     /**
-     * The components this plugin provides
+     * The component this plugin provides
      */
     val component: KClass<out PluginPanel> = Nothing::class,
+    /**
+     * The side the component will be minimized to
+     */
     val componentPosition: ComponentPosition = ComponentPosition.NORTH,
     /**
      * The plugin IDs this plugin should load after

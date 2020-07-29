@@ -10,7 +10,7 @@ import javax.swing.JScrollPane
 import org.jdesktop.swingx.JXPanel
 
 /**
- * A superclass of [JPanel] providing utilities for Rawky
+ * A superclass of [JXPanel] providing utilities for Rawky
  */
 abstract class PluginPanel : JXPanel() {
     /**

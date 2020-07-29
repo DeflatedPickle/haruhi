@@ -6,6 +6,6 @@ import com.deflatedpickle.haruhi.api.event.AbstractEvent
 import com.deflatedpickle.haruhi.component.PluginPanel
 
 /**
- * Called when a dock holding a [RawkyPanel] looses focus
+ * Called when a dock holding a [PluginPanel] looses focus
  */
 object EventPanelFocusLost : AbstractEvent<PluginPanel>()

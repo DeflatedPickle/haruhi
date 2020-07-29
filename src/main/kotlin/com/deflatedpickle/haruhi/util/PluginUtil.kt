@@ -2,6 +2,7 @@
 
 package com.deflatedpickle.haruhi.util
 
+import bibliothek.gui.dock.common.CControl
 import bibliothek.gui.dock.common.CLocation
 import bibliothek.gui.dock.common.DefaultSingleCDockable
 import bibliothek.gui.dock.common.event.CFocusListener
@@ -15,7 +16,6 @@ import com.deflatedpickle.haruhi.event.EventDiscoverPlugin
 import com.deflatedpickle.haruhi.event.EventLoadPlugin
 import com.deflatedpickle.haruhi.event.EventPanelFocusGained
 import com.deflatedpickle.haruhi.event.EventPanelFocusLost
-import com.deflatedpickle.haruhi.window.Window
 import io.github.classgraph.ClassInfo
 import java.io.File
 import javax.swing.JScrollPane
@@ -28,6 +28,8 @@ object PluginUtil {
     private val logger = LogManager.getLogger()
 
     var isInDev by Delegates.notNull<Boolean>()
+
+    lateinit var control: CControl
 
     /**
      * A list of found plugins, ordered for dependencies
@@ -235,7 +237,7 @@ object PluginUtil {
             }
         })
 
-        Window.control.addDockable(panel.componentHolder.dock as DefaultSingleCDockable)
+        this.control.addDockable(panel.componentHolder.dock as DefaultSingleCDockable)
 
         panel.componentHolder.dock.setLocation(
             when (plugin.componentPosition) {
