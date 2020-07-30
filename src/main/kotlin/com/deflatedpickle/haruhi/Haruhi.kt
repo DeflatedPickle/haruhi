@@ -7,7 +7,7 @@ import com.deflatedpickle.haruhi.api.plugin.PluginType
 @Plugin(
     value = "haruhi",
     author = "DeflatedPickle",
-    version = "1.0.1",
+    version = "1.2.0",
     description = """
         <br>
         A plugin framework
