@@ -12,7 +12,6 @@ import java.io.FileOutputStream
 import kotlin.reflect.full.createInstance
 
 @Suppress("MemberVisibilityCanBePrivate", "unused")
-@OptIn(ImplicitReflectionSerializer::class)
 object ConfigUtil {
     private val logger = LogManager.getLogger(this::class.simpleName)
 
@@ -63,6 +62,7 @@ object ConfigUtil {
         return file
     }
 
+    @ImplicitReflectionSerializer
     fun serializeConfig(id: String, file: File): File? {
         if (PluginUtil.slugToPlugin[id]!!.settings == Nothing::class) return null
 
@@ -76,6 +76,7 @@ object ConfigUtil {
         return file
     }
 
+    @ImplicitReflectionSerializer
     fun deserializeConfig(file: File): Boolean {
         val obj = PluginUtil.slugToPlugin[file.nameWithoutExtension] ?: return false
         val settings = obj.settings
@@ -87,6 +88,7 @@ object ConfigUtil {
         return true
     }
 
+    @ImplicitReflectionSerializer
     fun deserializeConfigToInstance(file: File, instance: Any): Any {
         @Suppress("UNCHECKED_CAST")
         val serializer = instance::class.serializer() as KSerializer<Any>
@@ -99,6 +101,7 @@ object ConfigUtil {
         return jsonObj
     }
 
+    @ImplicitReflectionSerializer
     fun serializeAllConfigs(): List<File> {
         val list = mutableListOf<File>()
 
