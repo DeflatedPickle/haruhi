@@ -3,6 +3,7 @@
 package com.deflatedpickle.haruhi.util
 
 import bibliothek.gui.dock.common.CControl
+import bibliothek.gui.dock.common.CGrid
 import bibliothek.gui.dock.common.CLocation
 import bibliothek.gui.dock.common.DefaultSingleCDockable
 import bibliothek.gui.dock.common.event.CFocusListener
@@ -10,6 +11,7 @@ import bibliothek.gui.dock.common.intern.CDockable
 import com.deflatedpickle.haruhi.api.plugin.Plugin
 import com.deflatedpickle.haruhi.api.plugin.PluginType
 import com.deflatedpickle.haruhi.api.util.ComponentPosition
+import com.deflatedpickle.haruhi.api.util.ComponentPositionNormal
 import com.deflatedpickle.haruhi.component.PluginPanel
 import com.deflatedpickle.haruhi.component.PluginPanelHolder
 import com.deflatedpickle.haruhi.event.EventDiscoverPlugin
@@ -30,6 +32,10 @@ object PluginUtil {
     var isInDev by Delegates.notNull<Boolean>()
 
     lateinit var control: CControl
+    lateinit var grid: CGrid
+
+    private var currentX = 0.0
+    private var currentY = 0.0
 
     /**
      * A list of found plugins, ordered for dependencies
@@ -237,10 +243,19 @@ object PluginUtil {
             }
         })
 
-        this.control.addDockable(panel.componentHolder.dock as DefaultSingleCDockable)
+        this.grid.add(
+            this.currentX, this.currentY,
+            plugin.componentWidth, plugin.componentHeight,
+            panel.componentHolder.dock
+        )
+
+        when (plugin.componentNormalPosition) {
+            ComponentPositionNormal.SOUTH -> this.currentY += plugin.componentWidth
+            ComponentPositionNormal.WEST -> this.currentX += plugin.componentHeight
+        }
 
         panel.componentHolder.dock.setLocation(
-            when (plugin.componentPosition) {
+            when (plugin.componentMinimizedPosition) {
                 ComponentPosition.NORTH -> CLocation.base().minimalNorth()
                 ComponentPosition.EAST -> CLocation.base().minimalEast()
                 ComponentPosition.SOUTH -> CLocation.base().minimalSouth()

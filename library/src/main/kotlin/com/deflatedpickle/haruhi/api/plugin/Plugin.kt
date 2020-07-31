@@ -3,6 +3,7 @@
 package com.deflatedpickle.haruhi.api.plugin
 
 import com.deflatedpickle.haruhi.api.util.ComponentPosition
+import com.deflatedpickle.haruhi.api.util.ComponentPositionNormal
 import com.deflatedpickle.haruhi.component.PluginPanel
 import com.deflatedpickle.haruhi.util.PluginUtil
 import kotlin.reflect.KClass
@@ -56,7 +57,19 @@ annotation class Plugin(
     /**
      * The side the component will be minimized to
      */
-    val componentPosition: ComponentPosition = ComponentPosition.NORTH,
+    val componentMinimizedPosition: ComponentPosition = ComponentPosition.NORTH,
+    /**
+     * The side the component will be added to
+     */
+    val componentNormalPosition: ComponentPositionNormal = ComponentPositionNormal.WEST,
+    /**
+     * The width of the dock of this component
+     */
+    val componentWidth: Double = 1.0,
+    /**
+     * The height of the dock of this component
+     */
+    val componentHeight: Double = 1.0,
     /**
      * The plugin IDs this plugin should load after
      */

@@ -3,6 +3,8 @@ import bibliothek.gui.dock.common.CGrid
 import com.deflatedpickle.haruhi.api.plugin.DependencyComparator
 import com.deflatedpickle.haruhi.api.plugin.Plugin
 import com.deflatedpickle.haruhi.api.plugin.PluginType
+import com.deflatedpickle.haruhi.api.util.ComponentPosition
+import com.deflatedpickle.haruhi.api.util.ComponentPositionNormal
 import com.deflatedpickle.haruhi.component.PluginPanel
 import com.deflatedpickle.haruhi.util.ClassGraphUtil
 import com.deflatedpickle.haruhi.util.PluginUtil
@@ -10,6 +12,7 @@ import javax.swing.JFrame
 import javax.swing.SwingUtilities
 import javax.swing.UIManager
 
+@Suppress("unused")
 @Plugin(
     value = "simple_plugin",
     author = "DeflatedPickle",
@@ -18,8 +21,19 @@ import javax.swing.UIManager
     component = SimpleComponent::class
 )
 object SimplePlugin
-
 object SimpleComponent : PluginPanel()
+
+@Suppress("unused")
+@Plugin(
+    value = "other_simple_plugin",
+    author = "DeflatedPickle",
+    version = "1.0.0",
+    type = PluginType.COMPONENT,
+    component = OtherSimpleComponent::class,
+    componentMinimizedPosition = ComponentPosition.EAST
+)
+object OtherSimplePlugin
+object OtherSimpleComponent : PluginPanel()
 
 fun main() {
     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName())
@@ -33,6 +47,7 @@ fun main() {
     PluginUtil.control = control
 
     val grid = CGrid(control)
+    PluginUtil.grid = grid
     frame.add(control.contentArea)
 
     ClassGraphUtil.refresh()
