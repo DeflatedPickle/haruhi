@@ -10,7 +10,7 @@ plugins {
 
 group 'org.deflatedpickle'
 archivesBaseName = 'haruhi'
-version '1.4.0'
+version '1.4.1'
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
@@ -38,6 +38,9 @@ dependencies {
 
     // Extended Swing widgets
     api 'org.swinglabs:swingx:1.6.1'
+
+    // Toasts
+    api 'com.github.DeflatedPickle.tosuto:tosuto:1.7.2'
 }
 
 compileKotlin {

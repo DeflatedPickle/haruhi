@@ -18,6 +18,7 @@ import com.deflatedpickle.haruhi.event.EventDiscoverPlugin
 import com.deflatedpickle.haruhi.event.EventLoadPlugin
 import com.deflatedpickle.haruhi.event.EventPanelFocusGained
 import com.deflatedpickle.haruhi.event.EventPanelFocusLost
+import com.deflatedpickle.tosuto.ToastWindow
 import io.github.classgraph.ClassInfo
 import java.io.File
 import javax.swing.JScrollPane
@@ -33,6 +34,7 @@ object PluginUtil {
     var isInDev by Delegates.notNull<Boolean>()
 
     lateinit var window: Window
+    lateinit var toastWindow: ToastWindow
     lateinit var control: CControl
     lateinit var grid: CGrid
 
