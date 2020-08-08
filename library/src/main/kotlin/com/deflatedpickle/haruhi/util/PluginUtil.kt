@@ -24,6 +24,7 @@ import javax.swing.JScrollPane
 import kotlin.properties.Delegates
 import me.xdrop.fuzzywuzzy.FuzzySearch
 import org.apache.logging.log4j.LogManager
+import java.awt.Window
 
 @Suppress("MemberVisibilityCanBePrivate", "unused")
 object PluginUtil {
@@ -31,6 +32,7 @@ object PluginUtil {
 
     var isInDev by Delegates.notNull<Boolean>()
 
+    lateinit var window: Window
     lateinit var control: CControl
     lateinit var grid: CGrid
 

@@ -10,7 +10,7 @@ plugins {
 
 group 'org.deflatedpickle'
 archivesBaseName = 'haruhi'
-version '1.3.0'
+version '1.4.0'
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
