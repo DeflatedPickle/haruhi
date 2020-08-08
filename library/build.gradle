@@ -1,5 +1,7 @@
 plugins {
     id 'java'
+    id 'java-library'
+
     id 'org.jetbrains.kotlin.jvm'
     id 'org.jetbrains.kotlin.plugin.serialization'
 
@@ -16,26 +18,26 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.20.0"
 
     // Logging
-    compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.11.1'
-    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.11.1'
+    compile 'org.apache.logging.log4j:log4j-api:2.11.1'
+    compile 'org.apache.logging.log4j:log4j-core:2.11.1'
 
     // Utility
-    implementation 'com.github.javadev:underscore:1.55'
+    api 'com.github.javadev:underscore:1.55'
 
     // Events
-    implementation 'com.github.Fylipp:easy-events:v1.1.0'
+    api 'com.github.Fylipp:easy-events:v1.1.0'
 
     // Allows for plugin loading
-    implementation 'io.github.classgraph:classgraph:4.8.85'
+    api 'io.github.classgraph:classgraph:4.8.85'
 
     // Fuzzy searching
-    implementation 'me.xdrop:fuzzywuzzy:1.2.0'
+    api 'me.xdrop:fuzzywuzzy:1.2.0'
 
     // Docking framework
-    implementation 'org.dockingframes:docking-frames-common:1.1.1'
+    api 'org.dockingframes:docking-frames-common:1.1.1'
 
     // Extended Swing widgets
-    implementation 'org.swinglabs:swingx:1.6.1'
+    api 'org.swinglabs:swingx:1.6.1'
 }
 
 compileKotlin {

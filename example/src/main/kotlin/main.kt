@@ -1,16 +1,17 @@
 import bibliothek.gui.dock.common.CControl
 import bibliothek.gui.dock.common.CGrid
+import com.deflatedpickle.haruhi.api.Registry
+import com.deflatedpickle.haruhi.api.constants.MenuCategory
 import com.deflatedpickle.haruhi.api.plugin.DependencyComparator
 import com.deflatedpickle.haruhi.api.plugin.Plugin
 import com.deflatedpickle.haruhi.api.plugin.PluginType
 import com.deflatedpickle.haruhi.api.util.ComponentPosition
-import com.deflatedpickle.haruhi.api.util.ComponentPositionNormal
 import com.deflatedpickle.haruhi.component.PluginPanel
+import com.deflatedpickle.haruhi.event.EventProgramFinishSetup
 import com.deflatedpickle.haruhi.util.ClassGraphUtil
 import com.deflatedpickle.haruhi.util.PluginUtil
-import javax.swing.JFrame
-import javax.swing.SwingUtilities
-import javax.swing.UIManager
+import com.deflatedpickle.haruhi.util.RegistryUtil
+import javax.swing.*
 
 @Suppress("unused")
 @Plugin(
@@ -20,7 +21,14 @@ import javax.swing.UIManager
     type = PluginType.COMPONENT,
     component = SimpleComponent::class
 )
-object SimplePlugin
+object SimplePlugin {
+    init {
+        EventProgramFinishSetup.addListener {
+            (RegistryUtil.get(MenuCategory.MENU.name)
+                ?.get(MenuCategory.FILE.name) as JMenu).add("New")
+        }
+    }
+}
 object SimpleComponent : PluginPanel()
 
 @Suppress("unused")
@@ -32,7 +40,14 @@ object SimpleComponent : PluginPanel()
     component = OtherSimpleComponent::class,
     componentMinimizedPosition = ComponentPosition.EAST
 )
-object OtherSimplePlugin
+object OtherSimplePlugin {
+    init {
+        EventProgramFinishSetup.addListener {
+            (RegistryUtil.get(MenuCategory.MENU.name)
+                ?.get(MenuCategory.EDIT.name) as JMenu).add("Undo")
+        }
+    }
+}
 object OtherSimpleComponent : PluginPanel()
 
 fun main() {
@@ -40,8 +55,24 @@ fun main() {
 
     PluginUtil.isInDev = true
 
+    val menuBar = JMenuBar()
+    val menuRegistry = object : Registry<String, JMenu>() {
+        init {
+            register(MenuCategory.FILE.name, JMenu("File"))
+            register(MenuCategory.EDIT.name, JMenu("Edit"))
+        }
+
+        override fun register(key: String, value: JMenu) {
+            super.register(key, value)
+            menuBar.add(value)
+        }
+    }
+
+    RegistryUtil.register(MenuCategory.MENU.name, menuRegistry)
+
     val frame = JFrame()
     frame.title = "Kotlin Example"
+    frame.jMenuBar = menuBar
 
     val control = CControl(frame)
     PluginUtil.control = control
@@ -68,6 +99,8 @@ fun main() {
             }
         }
     }
+
+    EventProgramFinishSetup.trigger(true)
 
     SwingUtilities.invokeLater {
         frame.setLocationRelativeTo(null)
