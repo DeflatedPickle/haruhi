@@ -1,4 +1,6 @@
-package com.deflatedpickle.haruhi.api.lang
+package com.deflatedpickle.haruhi.util
+
+import com.deflatedpickle.haruhi.api.lang.Lang
 
 @Suppress("unused")
 object LangUtil {

@@ -2,7 +2,7 @@ package com.deflatedpickle.haruhi.api.lang
 
 import java.util.*
 
-open class Lang(
+class Lang(
     prefix: String,
     lang: String? = null,
     classLoader: ClassLoader? = null
