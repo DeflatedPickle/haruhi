@@ -18,7 +18,8 @@ object ClassGraphUtil {
         name.endsWith(".jar")
     }?.map { it.toURI().toURL() } ?: listOf()
 
-    private val classLoader = URLClassLoader(jars.toTypedArray())
+    @Suppress("MemberVisibilityCanBePrivate")
+    val classLoader = URLClassLoader(jars.toTypedArray())
 
     init {
         if (!PluginUtil.isInDev) {
