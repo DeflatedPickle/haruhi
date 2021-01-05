@@ -1,6 +1,9 @@
+/* Copyright (c) 2021 DeflatedPickle under the MIT license */
+
 package com.deflatedpickle.haruhi.api.lang
 
-import java.util.*
+import java.util.Locale
+import java.util.ResourceBundle
 
 class Lang(
     prefix: String,
@@ -8,21 +11,17 @@ class Lang(
     classLoader: ClassLoader? = null
 ) {
     private val locale = Locale(lang ?: Locale.getDefault().language)
-    private val bundle: ResourceBundle
-
-    init {
-        bundle = if (classLoader == null) {
-            ResourceBundle.getBundle(
-                "lang/${prefix}",
-                locale
-            )
-        } else {
-            ResourceBundle.getBundle(
-                "lang/${prefix}",
-                locale,
-                classLoader
-            )
-        }
+    private val bundle: ResourceBundle = if (classLoader == null) {
+        ResourceBundle.getBundle(
+            "lang/$prefix",
+            locale
+        )
+    } else {
+        ResourceBundle.getBundle(
+            "lang/$prefix",
+            locale,
+            classLoader
+        )
     }
 
     /**

@@ -20,12 +20,12 @@ import com.deflatedpickle.haruhi.event.EventPanelFocusGained
 import com.deflatedpickle.haruhi.event.EventPanelFocusLost
 import com.deflatedpickle.tosuto.ToastWindow
 import io.github.classgraph.ClassInfo
+import java.awt.Window
 import java.io.File
 import javax.swing.JScrollPane
 import kotlin.properties.Delegates
 import me.xdrop.fuzzywuzzy.FuzzySearch
 import org.apache.logging.log4j.LogManager
-import java.awt.Window
 
 @Suppress("MemberVisibilityCanBePrivate", "unused")
 object PluginUtil {

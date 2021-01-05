@@ -1,3 +1,5 @@
+/* Copyright (c) 2021 DeflatedPickle under the MIT license */
+
 package com.deflatedpickle.haruhi.api
 
 import com.deflatedpickle.haruhi.api.registry.Registry
