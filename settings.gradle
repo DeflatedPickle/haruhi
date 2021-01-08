@@ -1,4 +1,5 @@
 rootProject.name = 'haruhi'
 
-include 'library'
+include 'master'
+
 include 'example'
