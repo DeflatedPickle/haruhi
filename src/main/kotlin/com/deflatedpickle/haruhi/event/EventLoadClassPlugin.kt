@@ -3,9 +3,10 @@
 package com.deflatedpickle.haruhi.event
 
 import com.deflatedpickle.haruhi.api.event.AbstractEvent
+import com.deflatedpickle.haruhi.api.plugin.HaruhiPlugin
 import com.deflatedpickle.haruhi.api.plugin.Plugin
 
 /**
  * Called when a plugin is loaded, with the plugin annotation instance
  */
-object EventLoadPlugin : AbstractEvent<Plugin>()
+object EventLoadClassPlugin : AbstractEvent<HaruhiPlugin>()

@@ -4,10 +4,8 @@ package com.deflatedpickle.haruhi.event
 
 import com.deflatedpickle.haruhi.api.event.AbstractEvent
 import com.deflatedpickle.haruhi.api.plugin.Plugin
-import com.deflatedpickle.haruhi.api.plugin.PluginCollection
 
 /**
- * Called once all plugins have been, with an ordered list of the plugins
+ * Called when a plugin is loaded, with the plugin annotation instance
  */
-@Suppress("unused")
-object EventLoadedPlugins : AbstractEvent<PluginCollection>()
+object EventLoadAnnotationPlugin : AbstractEvent<Plugin>()

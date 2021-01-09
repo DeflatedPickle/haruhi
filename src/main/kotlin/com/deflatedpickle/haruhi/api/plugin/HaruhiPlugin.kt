@@ -1,32 +1,13 @@
-/* Copyright (c) 2020 DeflatedPickle under the MIT license */
-
 package com.deflatedpickle.haruhi.api.plugin
 
 import com.deflatedpickle.haruhi.api.util.ComponentPosition
 import com.deflatedpickle.haruhi.api.util.ComponentPositionNormal
 import com.deflatedpickle.haruhi.component.PluginPanel
-import com.deflatedpickle.haruhi.util.PluginUtil
 import kotlin.reflect.KClass
+import org.apache.logging.log4j.LogManager
 
-/**
- * A plugin to add extra features
- *
- * Discovered by [PluginUtil.discoverAnnotationPlugins]
- */
-@Deprecated("Replaced with an abstract class")
-@Suppress("unused")
-@Target(AnnotationTarget.CLASS)
-// TODO: Write an accumulating system to dock components next to each other
-annotation class Plugin(
-    /**
-     * The name/id of the plugin
-     *
-     * This should be provided as lower-case, with words separated by underscores.
-     *
-     * Example: pixel_grid
-     */
-    // TODO: Plugin IDs could be guessed by using the lowercased name of the object they're attached to
-    val value: String,
+@Suppress("unused", "SpellCheckingInspection")
+abstract class HaruhiPlugin(
     /**
      * The author of the plugin
      *
@@ -54,7 +35,7 @@ annotation class Plugin(
     /**
      * The component this plugin provides
      */
-    val component: KClass<out PluginPanel> = Nothing::class,
+    val component: KClass<out PluginPanel>? = null,
     /**
      * The side the component will be minimized to
      */
@@ -74,9 +55,25 @@ annotation class Plugin(
     /**
      * The plugin IDs this plugin should load after
      */
-    val dependencies: Array<String> = [],
+    val dependencies: Array<String> = arrayOf(),
     /**
      * The config for this plugin
      */
-    val settings: KClass<*> = Nothing::class
-)
+    val settings: KClass<*>? = null
+) {
+    private val logger = LogManager.getLogger()
+
+    init {
+        this.logger.trace("Initialized ${getName()}")
+    }
+
+    fun getName(): String = this::class.simpleName!!
+        .replace(" ", "_")
+        .toLowerCase()
+        .replace("plugin", "")
+
+    fun getSlug(): String = "${author.toLowerCase()}@${getName().toLowerCase()}#${version}"
+
+    fun load() {}
+    fun unload() {}
+}

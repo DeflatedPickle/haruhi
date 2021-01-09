@@ -2,9 +2,12 @@
 
 package com.deflatedpickle.haruhi.util
 
+import com.deflatedpickle.haruhi.api.plugin.HaruhiPlugin
+import com.deflatedpickle.haruhi.api.plugin.Plugin
 import com.github.underscore.lodash.U
 import java.io.File
 import java.io.FileOutputStream
+import java.lang.IllegalArgumentException
 import kotlin.reflect.full.createInstance
 import kotlinx.serialization.ImplicitReflectionSerializer
 import kotlinx.serialization.KSerializer
@@ -41,7 +44,11 @@ object ConfigUtil {
         val list = mutableListOf<File>()
 
         for (id in PluginUtil.discoveredPlugins) {
-            list.add(this.createConfigFile(id.value))
+            when (id) {
+                is Plugin -> list.add(this.createConfigFile(id.value))
+                is HaruhiPlugin -> list.add(this.createConfigFile(id.getName()))
+            }
+
         }
 
         return list
@@ -108,7 +115,11 @@ object ConfigUtil {
         val list = mutableListOf<File>()
 
         for (plugin in PluginUtil.discoveredPlugins) {
-            val id = PluginUtil.pluginToSlug(plugin)
+            val id = when (plugin) {
+                is Plugin -> PluginUtil.pluginToSlug(plugin)
+                is HaruhiPlugin -> plugin.getSlug()
+                else -> throw IllegalArgumentException("Argument must be a Plugin or HaruhiPlugin")
+            }
             val file = File("config/$id.json")
 
             this.serializeConfig(id, file)

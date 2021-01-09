@@ -2,6 +2,7 @@
 
 package com.deflatedpickle.haruhi.component
 
+import com.deflatedpickle.haruhi.api.plugin.HaruhiPlugin
 import com.deflatedpickle.haruhi.api.plugin.Plugin
 import com.deflatedpickle.haruhi.api.redraw.RedrawActive
 import java.awt.event.MouseAdapter
@@ -17,6 +18,7 @@ abstract class PluginPanel : JXPanel() {
      * The plugin this component belongs to
      */
     lateinit var plugin: Plugin
+    lateinit var classPlugin: HaruhiPlugin
 
     /**
      * The [JScrollPane] this panel was added to

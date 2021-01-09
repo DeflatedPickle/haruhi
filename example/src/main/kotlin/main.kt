@@ -2,7 +2,7 @@ import bibliothek.gui.dock.common.CControl
 import bibliothek.gui.dock.common.CGrid
 import com.deflatedpickle.haruhi.api.Registry
 import com.deflatedpickle.haruhi.api.constants.MenuCategory
-import com.deflatedpickle.haruhi.api.plugin.DependencyComparator
+import com.deflatedpickle.haruhi.api.plugin.AnnotationPluginDependencyComparator
 import com.deflatedpickle.haruhi.api.plugin.Plugin
 import com.deflatedpickle.haruhi.api.plugin.PluginType
 import com.deflatedpickle.haruhi.api.util.ComponentPosition
@@ -85,8 +85,8 @@ fun main() {
     frame.add(control.contentArea)
 
     ClassGraphUtil.refresh()
-    PluginUtil.discoverPlugins()
-    PluginUtil.discoveredPlugins.sortWith(DependencyComparator)
+    PluginUtil.discoverAnnotationPlugins()
+    PluginUtil.discoveredPlugins.sortWith(AnnotationPluginDependencyComparator)
     PluginUtil.loadPlugins {
         PluginUtil.validateVersion(it) &&
                 PluginUtil.validateDescription(it) &&

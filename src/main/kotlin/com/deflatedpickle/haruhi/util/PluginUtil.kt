@@ -8,20 +8,24 @@ import bibliothek.gui.dock.common.CLocation
 import bibliothek.gui.dock.common.DefaultSingleCDockable
 import bibliothek.gui.dock.common.event.CFocusListener
 import bibliothek.gui.dock.common.intern.CDockable
+import com.deflatedpickle.haruhi.api.plugin.HaruhiPlugin
 import com.deflatedpickle.haruhi.api.plugin.Plugin
+import com.deflatedpickle.haruhi.api.plugin.PluginCollection
 import com.deflatedpickle.haruhi.api.plugin.PluginType
 import com.deflatedpickle.haruhi.api.util.ComponentPosition
 import com.deflatedpickle.haruhi.api.util.ComponentPositionNormal
 import com.deflatedpickle.haruhi.component.PluginPanel
 import com.deflatedpickle.haruhi.component.PluginPanelHolder
 import com.deflatedpickle.haruhi.event.EventDiscoverPlugin
-import com.deflatedpickle.haruhi.event.EventLoadPlugin
+import com.deflatedpickle.haruhi.event.EventLoadAnnotationPlugin
+import com.deflatedpickle.haruhi.event.EventLoadClassPlugin
 import com.deflatedpickle.haruhi.event.EventPanelFocusGained
 import com.deflatedpickle.haruhi.event.EventPanelFocusLost
 import com.deflatedpickle.tosuto.ToastWindow
 import io.github.classgraph.ClassInfo
 import java.awt.Window
 import java.io.File
+import java.lang.IllegalArgumentException
 import javax.swing.JScrollPane
 import kotlin.properties.Delegates
 import me.xdrop.fuzzywuzzy.FuzzySearch
@@ -44,18 +48,21 @@ object PluginUtil {
     /**
      * A list of found plugins, ordered for dependencies
      */
-    val discoveredPlugins = mutableListOf<Plugin>()
+    val discoveredPlugins = PluginCollection()
 
     /**
      * A list of loaded plugins, unordered
      */
-    val loadedPlugins = mutableListOf<Plugin>()
+    val loadedPlugins = PluginCollection()
 
     /**
      * A list of plugins that threw errors during loading
      */
-    val unloadedPlugins = mutableListOf<Plugin>()
+    val unloadedPlugins = PluginCollection()
 
+    /**
+     * A map of annotation plugins and their slugs
+     */
     val slugToPlugin = mutableMapOf<String, Plugin>()
 
     // These are used to validate different strings
@@ -63,10 +70,16 @@ object PluginUtil {
     private val slugRegex = Regex("[a-z]+@[a-z_]+#[0-9].[0-9].[0-9]")
 
     /**
-     * A map of plugins that were found when refreshed, paired with the object they were applied to
+     * A map of annotation plugins that were found when refreshed, paired with the object they were applied to
      */
     @Suppress("MemberVisibilityCanBePrivate")
     val pluginMap = mutableMapOf<Plugin, ClassInfo>()
+
+    /**
+     * A map of class plugins that were found when refreshed, paired with the object they were applied to
+     */
+    @Suppress("MemberVisibilityCanBePrivate")
+    val classPluginMap = mutableMapOf<HaruhiPlugin, ClassInfo>()
 
     /**
      * Constructs a slug from a [Plugin]
@@ -83,9 +96,10 @@ object PluginUtil {
         File("plugins").apply { mkdir() }
 
     /**
-     * Calls [run] for all classes annotated with [Plugin], to find and validate each plugin
+     * Searches the class graph for all classes annotated with [Plugin], then loads them and dispatches events
      */
-    fun discoverPlugins() {
+    @Deprecated("Replaced with a loader for the abstract class plugins")
+    fun discoverAnnotationPlugins() {
         // Caches the classes found as plugins
         var counter = 0
 
@@ -109,25 +123,70 @@ object PluginUtil {
             counter++
         }
 
-        this.logger.info("Found $counter plugin/s")
+        this.logger.info("Found $counter annotation-based plugin/s")
+    }
+
+    /**
+     * Searches the class graph for all
+     */
+    fun discoverSubclassPlugins() {
+        // Caches the classes found as plugins
+        var counter = 0
+
+        for (plugin in ClassGraphUtil.scanResults.getSubclasses(HaruhiPlugin::class.qualifiedName)) {
+            logger.debug("Found the plugin ${plugin.simpleName} from ${plugin.packageName}")
+
+            val instance = ClassGraphUtil.scanResults
+                .getClassInfo(plugin.name)
+                .loadClass()
+                .kotlin
+                .objectInstance as HaruhiPlugin
+
+            this.discoveredPlugins.add(instance)
+
+            counter++
+        }
+
+        this.logger.info("Found $counter abstract class-based plugin/s")
     }
 
     fun loadPlugins(validator: (Plugin) -> Boolean) {
         var counter = 0
 
         for (ann in discoveredPlugins) {
-            if (validator(ann)) {
-                this.pluginMap[ann]!!.loadClass().kotlin.objectInstance
-                this.loadedPlugins.add(ann)
-                EventLoadPlugin.trigger(ann)
+            when (ann) {
+                is Plugin -> if (validator(ann)) {
+                    this.pluginMap[ann]!!.loadClass().kotlin.objectInstance
+                    this.loadedPlugins.add(ann)
+                    EventLoadAnnotationPlugin.trigger(ann)
 
-                counter++
-            } else {
-                this.unloadedPlugins.add(ann)
+                    counter++
+                } else {
+                    this.unloadedPlugins.add(ann)
+                }
+                is HaruhiPlugin -> {
+                    // Class plugins already get loaded when they're discovered, so we can just add it
+                    this.loadedPlugins.add(ann)
+                    EventLoadClassPlugin.trigger(ann)
+
+                    counter++
+                }
             }
         }
 
         this.logger.info("Loaded $counter plugin/s")
+    }
+
+    /**
+     * Checks the [plugin]'s author isn't blank
+     */
+    fun validateAuthor(plugin: Plugin): Boolean {
+        if (plugin.author.isNotBlank()) {
+            return false
+        }
+
+        this.logger.warn("This plugin '${plugin.author}' is blank")
+        return false
     }
 
     /**
@@ -190,7 +249,13 @@ object PluginUtil {
         val suggestions = mutableMapOf<String, MutableList<String>>()
 
         for (dep in plugin.dependencies) {
-            if (dep !in this.discoveredPlugins.map { this.pluginToSlug(it) }) {
+            if (dep !in this.discoveredPlugins.map {
+                    when (it) {
+                        is Plugin -> this.pluginToSlug(it)
+                        is HaruhiPlugin -> it.getSlug()
+                        else -> IllegalArgumentException("Argument must be a Plugin or HaruhiPlugin")
+                    }
+                }) {
                 suggestions.putIfAbsent(dep, mutableListOf())
 
                 for (checkDep in this.pluginMap.keys) {
@@ -223,6 +288,63 @@ object PluginUtil {
         panel.componentHolder.dock = DefaultSingleCDockable(
             plugin.value,
             plugin.value.replace("_", " ").capitalize(),
+            panel.scrollPane
+        )
+        panel.componentHolder.dock.addFocusListener(object : CFocusListener {
+            override fun focusLost(dockable: CDockable) {
+                EventPanelFocusLost.trigger(
+                    ((dockable as DefaultSingleCDockable)
+                        .contentPane
+                        .getComponent(0) as JScrollPane)
+                        .viewport
+                        .view as PluginPanel
+                )
+            }
+
+            override fun focusGained(dockable: CDockable) {
+                EventPanelFocusGained.trigger(
+                    ((dockable as DefaultSingleCDockable)
+                        .contentPane
+                        .getComponent(0) as JScrollPane)
+                        .viewport
+                        .view as PluginPanel
+                )
+            }
+        })
+
+        this.grid.add(
+            this.currentX, this.currentY,
+            plugin.componentWidth, plugin.componentHeight,
+            panel.componentHolder.dock
+        )
+
+        when (plugin.componentNormalPosition) {
+            ComponentPositionNormal.SOUTH -> this.currentY += plugin.componentWidth
+            ComponentPositionNormal.WEST -> this.currentX += plugin.componentHeight
+        }
+
+        panel.componentHolder.dock.setLocation(
+            when (plugin.componentMinimizedPosition) {
+                ComponentPosition.NORTH -> CLocation.base().minimalNorth()
+                ComponentPosition.EAST -> CLocation.base().minimalEast()
+                ComponentPosition.SOUTH -> CLocation.base().minimalSouth()
+                ComponentPosition.WEST -> CLocation.base().minimalWest()
+            }
+        )
+
+        panel.componentHolder.dock.isVisible = true
+
+        return panel
+    }
+
+    fun createComponent(plugin: HaruhiPlugin, panel: PluginPanel): PluginPanel {
+        panel.classPlugin = plugin
+        panel.scrollPane = JScrollPane(panel)
+
+        panel.componentHolder = PluginPanelHolder()
+        panel.componentHolder.dock = DefaultSingleCDockable(
+            plugin.getName(),
+            plugin.getName().replace("_", " ").capitalize(),
             panel.scrollPane
         )
         panel.componentHolder.dock.addFocusListener(object : CFocusListener {
