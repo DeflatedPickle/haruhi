@@ -12,7 +12,7 @@ abstract class AbstractEvent<T : Any> : SimpleEvent<T>() {
     protected val logger: Logger = LogManager.getLogger(this::class.simpleName)
 
     override fun trigger(t: T) {
-        this.logger.debug("This event was triggered with ${t::class}")
+        this.logger.trace("This event was triggered with ${t::class}")
         super.trigger(t)
     }
 
