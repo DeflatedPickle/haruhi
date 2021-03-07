@@ -14,4 +14,11 @@ open class Registry<K, V> : Registry<K, V> {
     override fun has(key: K): Boolean = this.items.containsKey(key)
     override fun get(key: K): V? = this.items[key]
     override fun getAll(): Map<K, V> = this.items
+
+    override fun getOrRegister(key: K, value: V): V? {
+        if (!this.has(key)) {
+            this.register(key, value)
+        }
+        return this.get(key)
+    }
 }

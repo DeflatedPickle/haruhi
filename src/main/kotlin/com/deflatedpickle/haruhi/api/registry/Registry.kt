@@ -7,4 +7,5 @@ interface Registry<K, V> {
     fun has(key: K): Boolean
     fun get(key: K): V?
     fun getAll(): Map<K, V>
+    fun getOrRegister(key: K, value: V): V?
 }
