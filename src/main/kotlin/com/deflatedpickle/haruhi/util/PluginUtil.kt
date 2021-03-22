@@ -1,4 +1,4 @@
-/* Copyright (c) 2020 DeflatedPickle under the MIT license */
+/* Copyright (c) 2020-2021 DeflatedPickle under the MIT license */
 
 package com.deflatedpickle.haruhi.util
 
@@ -19,6 +19,7 @@ import com.deflatedpickle.haruhi.event.EventLoadPlugin
 import com.deflatedpickle.haruhi.event.EventPanelFocusGained
 import com.deflatedpickle.haruhi.event.EventPanelFocusLost
 import com.deflatedpickle.tosuto.ToastWindow
+import com.github.zafarkhaja.semver.Version
 import io.github.classgraph.ClassInfo
 import java.awt.Window
 import java.io.File
@@ -190,6 +191,23 @@ object PluginUtil {
         val suggestions = mutableMapOf<String, MutableList<String>>()
 
         for (dep in plugin.dependencies) {
+            // The version might be a symver,
+            // in which case it wouldn't exist in the discovered plugins,
+            // so we test for it first
+            for (plug in this.discoveredPlugins) {
+                val author = dep.substringBefore("@")
+                val value = dep.substringAfter("$author@").substringBefore("#")
+                val version = dep.substringAfter("#")
+
+                if (plug.author.toLowerCase() == author && plug.value == value) {
+                    val symVer = Version.valueOf(plug.version)
+
+                    if (symVer.satisfies(version)) {
+                        return true
+                    }
+                }
+            }
+
             if (dep !in this.discoveredPlugins.map { this.pluginToSlug(it) }) {
                 suggestions.putIfAbsent(dep, mutableListOf())
 

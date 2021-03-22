@@ -66,12 +66,12 @@ fun main() {
             super.register(key, value)
             menuBar.add(value)
         }
-    } as Registry<String, Any>
+    }
 
     RegistryUtil.register(MenuCategory.MENU.name, menuRegistry)
 
-    val tempRegistry = RegistryUtil.get(MenuCategory.MENU.name)
-    tempRegistry?.register(MenuCategory.TOOLS.name, JMenu("Tools"))
+    // val tempRegistry = RegistryUtil.get(MenuCategory.MENU.name)
+    // tempRegistry?.register(MenuCategory.TOOLS.name, JMenu("Tools"))
 
     val frame = JFrame()
     frame.title = "Kotlin Example"
@@ -91,7 +91,7 @@ fun main() {
         PluginUtil.validateVersion(it) &&
                 PluginUtil.validateDescription(it) &&
                 PluginUtil.validateType(it) &&
-                PluginUtil.validateDependencySlug(it) &&
+                // PluginUtil.validateDependencySlug(it) &&
                 PluginUtil.validateDependencyExistence(it)
     }
 

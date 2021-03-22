@@ -1,4 +1,4 @@
-/* Copyright (c) 2020 DeflatedPickle under the MIT license */
+/* Copyright (c) 2020-2021 DeflatedPickle under the MIT license */
 
 package com.deflatedpickle.haruhi
 
@@ -9,7 +9,7 @@ import com.deflatedpickle.haruhi.api.plugin.PluginType
 @Plugin(
     value = "haruhi",
     author = "DeflatedPickle",
-    version = "1.5.3",
+    version = "1.5.4",
     description = """
         <br>
         A plugin framework
