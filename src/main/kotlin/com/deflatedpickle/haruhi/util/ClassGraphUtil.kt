@@ -35,7 +35,7 @@ object ClassGraphUtil {
 
     fun refresh() {
         this.scanResults = if (PluginUtil.isInDev) {
-            ClassGraph().enableAllInfo().scan(4)
+            ClassGraph().enableAllInfo().scan()
         } else {
             ClassGraph()
                 .enableAllInfo()
