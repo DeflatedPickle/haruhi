@@ -2,6 +2,8 @@
 
 package com.deflatedpickle.haruhi.util
 
+import com.deflatedpickle.haruhi.event.EventDeserializedConfig
+import com.deflatedpickle.haruhi.event.EventSerializeConfig
 import com.github.underscore.lodash.U
 import com.github.zafarkhaja.semver.Version
 import java.io.File
@@ -90,6 +92,8 @@ object ConfigUtil {
         out.flush()
         out.close()
 
+        EventSerializeConfig.trigger(file)
+
         return file
     }
 
@@ -128,6 +132,8 @@ object ConfigUtil {
         val jsonObj = json.decodeFromString(serializer, file.readText())
 
         this.idToSettings[file.nameWithoutExtension] = jsonObj
+
+        EventDeserializedConfig.trigger(file)
 
         return jsonObj
     }
