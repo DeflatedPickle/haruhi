@@ -196,7 +196,7 @@ object PluginUtil {
             // so we test for it first
             for (plug in this.discoveredPlugins) {
                 val author = dep.substringBefore("@")
-                val value = dep.substringAfter("$author@").substringBefore("#")
+                val value = dep.substringAfter("@").substringBefore("#")
                 val version = dep.substringAfter("#")
 
                 if (plug.author.toLowerCase() == author && plug.value == value) {

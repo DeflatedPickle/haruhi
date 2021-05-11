@@ -3,13 +3,13 @@
 package com.deflatedpickle.haruhi.util
 
 import com.github.underscore.lodash.U
+import com.github.zafarkhaja.semver.Version
 import java.io.File
 import java.io.FileOutputStream
 import kotlin.reflect.full.createInstance
-import kotlinx.serialization.ImplicitReflectionSerializer
+import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonConfiguration
 import kotlinx.serialization.serializer
 import org.apache.logging.log4j.LogManager
 
@@ -22,8 +22,37 @@ object ConfigUtil {
      */
     private val idToSettings = mutableMapOf<String, Any>()
 
+    fun <T : Any> getSettings(author: String, value: String, version: String): T? {
+        for (plug in PluginUtil.loadedPlugins) {
+            if (plug.author.toLowerCase() == author && plug.value == value) {
+                val symVer = Version.valueOf(plug.version)
+
+                if (symVer.satisfies(version)) {
+                    for ((k, v) in idToSettings) {
+                        val otherAuthor = k.substringBefore("@")
+                        val otherValue = k.substringAfter("@").substringBefore("#")
+
+                        if (author == otherAuthor && value == otherValue) {
+                            return v as T
+                        }
+                    }
+                }
+            }
+        }
+
+        return null
+    }
+
     @Suppress("UNCHECKED_CAST")
-    fun <T : Any> getSettings(id: String): T = idToSettings[id] as T
+    fun <T : Any> getSettings(id: String): T? {
+        // return idToSettings[id] as T
+
+        val author = id.substringBefore("@")
+        val value = id.substringAfter("@").substringBefore("#")
+        val version = id.substringAfter("#")
+
+        return getSettings(author, value, version)
+    }
 
     fun createConfigFolder(): File = File("config")
 
@@ -47,13 +76,13 @@ object ConfigUtil {
         return list
     }
 
-    @ImplicitReflectionSerializer
+    @InternalSerializationApi
     fun serializeConfigToInstance(file: File, instance: Any): File? {
         @Suppress("UNCHECKED_CAST")
         val serializer = instance::class.serializer() as KSerializer<Any>
 
-        val json = Json(JsonConfiguration.Stable)
-        val jsonData = json.stringify(serializer, instance)
+        val json = Json.Default
+        val jsonData = json.encodeToString(serializer, instance)
 
         val out = FileOutputStream(file, false)
 
@@ -64,7 +93,7 @@ object ConfigUtil {
         return file
     }
 
-    @ImplicitReflectionSerializer
+    @InternalSerializationApi
     fun serializeConfig(id: String, file: File): File? {
         if (PluginUtil.slugToPlugin[id]!!.settings == Nothing::class) return null
 
@@ -78,7 +107,7 @@ object ConfigUtil {
         return file
     }
 
-    @ImplicitReflectionSerializer
+    @InternalSerializationApi
     fun deserializeConfig(file: File): Boolean {
         val obj = PluginUtil.slugToPlugin[file.nameWithoutExtension] ?: return false
         val settings = obj.settings
@@ -90,20 +119,20 @@ object ConfigUtil {
         return true
     }
 
-    @ImplicitReflectionSerializer
+    @InternalSerializationApi
     fun deserializeConfigToInstance(file: File, instance: Any): Any {
         @Suppress("UNCHECKED_CAST")
         val serializer = instance::class.serializer() as KSerializer<Any>
 
-        val json = Json(JsonConfiguration.Stable)
-        val jsonObj = json.parse(serializer, file.readText())
+        val json = Json.Default
+        val jsonObj = json.decodeFromString(serializer, file.readText())
 
         this.idToSettings[file.nameWithoutExtension] = jsonObj
 
         return jsonObj
     }
 
-    @ImplicitReflectionSerializer
+    @InternalSerializationApi
     fun serializeAllConfigs(): List<File> {
         val list = mutableListOf<File>()
 
