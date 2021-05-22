@@ -69,11 +69,35 @@ object PluginUtil {
     @Suppress("MemberVisibilityCanBePrivate")
     val pluginMap = mutableMapOf<Plugin, ClassInfo>()
 
+    fun valuesToSlug(author: String, value: String, version: String = "") =
+        "${author.toLowerCase()}@${value.toLowerCase()}#${version}"
+
     /**
      * Constructs a slug from a [Plugin]
      */
     fun pluginToSlug(plugin: Plugin): String =
-        "${plugin.author.toLowerCase()}@${plugin.value.toLowerCase()}#${plugin.version}"
+        valuesToSlug(plugin.author, plugin.value, plugin.version)
+
+    /**
+     * Get's a [Plugin] from a slug
+     */
+    fun slugToPlugin(slug: String): Plugin? {
+        val author = slug.substringBefore("@")
+        val value = slug.substringAfter("@").substringBefore("#")
+        val version = slug.substringAfter("#")
+
+        val slug = valuesToSlug(author, value, version)
+
+        return if (slug in slugToPlugin) {
+            slugToPlugin[slug]
+        } else {
+            slugToPlugin.filterValues {
+                it.value == value && it.author.toLowerCase() == author
+            }.values.first()
+        }
+    }
+
+    fun slugToPlugin(author: String, value: String, version: String = "") = slugToPlugin("$author@$value#$version")
 
     /**
      * Creates the plugins folder

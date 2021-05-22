@@ -24,6 +24,8 @@ object ConfigUtil {
      */
     private val idToSettings = mutableMapOf<String, Any>()
 
+    // TODO: getSettingsFile
+
     fun <T : Any> getSettings(author: String, value: String, version: String): T? {
         for (plug in PluginUtil.loadedPlugins) {
             if (plug.author.toLowerCase() == author && plug.value == value) {
