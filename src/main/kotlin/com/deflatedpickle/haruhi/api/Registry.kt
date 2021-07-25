@@ -21,4 +21,6 @@ open class Registry<K, V> : Registry<K, V> {
         }
         return this.get(key)
     }
+
+    fun getOrRegister(key: K, value: () -> V): V? = getOrRegister(key, value())
 }

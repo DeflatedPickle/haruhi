@@ -16,7 +16,6 @@ version '1.5.4'
 sourceCompatibility = 1.8
 
 repositories {
-    jcenter()
     mavenCentral()
 
     maven { url 'https://jitpack.io' }
@@ -35,7 +34,7 @@ dependencies {
     implementation 'com.github.javadev:underscore:1.55'
 
     // Events
-    implementation 'com.github.Fylipp:easy-events:v1.1.0'
+    api 'com.github.Fylipp:easy-events:v1.1.0'
 
     // Allows for plugin loading
     implementation 'io.github.classgraph:classgraph:4.8.85'
@@ -50,7 +49,7 @@ dependencies {
     implementation 'org.swinglabs:swingx:1.6.1'
 
     // Toasts
-    implementation 'com.github.DeflatedPickle.tosuto:tosuto:1.7.2'
+    api 'com.github.DeflatedPickle.tosuto:tosuto:1.7.2'
 
     // Symantic versioning
     implementation 'com.github.zafarkhaja:java-semver:0.9.0'
