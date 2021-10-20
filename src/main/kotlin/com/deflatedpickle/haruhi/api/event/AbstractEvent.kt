@@ -7,12 +7,12 @@ import java.util.function.Consumer
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
-abstract class AbstractEvent<T : Any> : SimpleEvent<T>() {
+abstract class AbstractEvent<T : Any?> : SimpleEvent<T>() {
     @Suppress("MemberVisibilityCanBePrivate")
     protected val logger: Logger = LogManager.getLogger(this::class.simpleName)
 
     override fun trigger(t: T) {
-        this.logger.trace("This event was triggered with ${t::class}")
+        this.logger.trace("This event was triggered with ${if (t == null) "null" else t!!::class.simpleName}")
         super.trigger(t)
     }
 
