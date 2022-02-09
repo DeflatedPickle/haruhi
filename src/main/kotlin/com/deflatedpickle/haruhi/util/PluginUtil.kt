@@ -28,6 +28,7 @@ import kotlin.properties.Delegates
 import me.xdrop.fuzzywuzzy.FuzzySearch
 import org.apache.logging.log4j.LogManager
 import javax.swing.JFrame
+import javax.swing.JToolBar
 
 @Suppress("MemberVisibilityCanBePrivate", "unused")
 object PluginUtil {
@@ -36,6 +37,7 @@ object PluginUtil {
     var isInDev by Delegates.notNull<Boolean>()
 
     lateinit var window: JFrame
+    lateinit var toolbar: JToolBar
     lateinit var toastWindow: ToastWindow
     lateinit var control: CControl
     lateinit var grid: CGrid
