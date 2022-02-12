@@ -292,11 +292,15 @@ object PluginUtil {
             }
         })
 
-        this.grid.add(
-            this.currentX, this.currentY,
-            plugin.componentWidth, plugin.componentHeight,
-            panel.componentHolder.dock
-        )
+        if (plugin.componentVisible) {
+            this.grid.add(
+                this.currentX, this.currentY,
+                plugin.componentWidth, plugin.componentHeight,
+                panel.componentHolder.dock
+            )
+        } else {
+            control.addDockable(panel.componentHolder.dock as DefaultSingleCDockable)
+        }
 
         when (plugin.componentNormalPosition) {
             ComponentPositionNormal.SOUTH -> this.currentY += plugin.componentWidth

@@ -70,6 +70,7 @@ annotation class Plugin(
      * The height of the dock of this component
      */
     val componentHeight: Double = 1.0,
+    val componentVisible: Boolean = true,
     /**
      * The plugin IDs this plugin should load after
      */
