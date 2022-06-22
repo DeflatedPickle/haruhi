@@ -8,6 +8,8 @@ import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
 import javax.swing.JScrollPane
 import org.jdesktop.swingx.JXPanel
+import java.awt.event.KeyAdapter
+import java.awt.event.KeyEvent
 
 /**
  * A superclass of [JXPanel] providing utilities for Rawky
@@ -44,6 +46,12 @@ abstract class PluginPanel : JXPanel() {
                         override fun mouseMoved(e: MouseEvent) = repaint()
                         override fun mouseDragged(e: MouseEvent) = repaint()
                     }.apply { addMouseMotionListener(this) })
+
+                    this.addKeyListener(object : KeyAdapter() {
+                        override fun keyPressed(e: KeyEvent) = repaint()
+                        override fun keyReleased(e: KeyEvent) = repaint()
+                        override fun keyTyped(e: KeyEvent) = repaint()
+                    })
                 }
             }
         }
