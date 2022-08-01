@@ -2,7 +2,7 @@ plugins {
     id 'java'
     id 'java-library'
 
-    id 'org.jetbrains.kotlin.jvm' version '1.5.21'
+    id 'org.jetbrains.kotlin.jvm' version '1.7.0'
     id 'org.jetbrains.kotlin.plugin.serialization' version '1.5.21'
 
     id 'com.diffplug.gradle.spotless' version '3.27.0'
@@ -23,24 +23,24 @@ repositories {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-    implementation 'org.jetbrains.kotlin:kotlin-reflect:1.5.21'
-    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2"
+    implementation 'org.jetbrains.kotlin:kotlin-reflect:1.7.0'
+    implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3'
 
     // Logging
-    implementation 'org.apache.logging.log4j:log4j-api:2.14.1'
-    implementation 'org.apache.logging.log4j:log4j-core:2.14.1'
+    implementation 'org.apache.logging.log4j:log4j-api:2.17.2'
+    implementation 'org.apache.logging.log4j:log4j-core:2.17.2'
 
     // Utility
-    implementation 'com.github.javadev:underscore:1.68'
+    implementation 'com.github.javadev:underscore:1.78'
 
     // Events
     api 'com.github.Fylipp:easy-events:1.1.0'
 
     // Allows for plugin loading
-    implementation 'io.github.classgraph:classgraph:4.8.115'
+    implementation 'io.github.classgraph:classgraph:4.8.147'
 
     // Fuzzy searching
-    implementation 'me.xdrop:fuzzywuzzy:1.3.1'
+    implementation 'me.xdrop:fuzzywuzzy:1.4.0'
 
     // Docking framework
     implementation 'org.dockingframes:docking-frames-common:1.1.1'
