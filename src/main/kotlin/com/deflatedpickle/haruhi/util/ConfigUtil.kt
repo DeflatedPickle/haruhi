@@ -2,6 +2,7 @@
 
 package com.deflatedpickle.haruhi.util
 
+import com.deflatedpickle.haruhi.api.plugin.Plugin
 import com.deflatedpickle.haruhi.event.EventDeserializedConfig
 import com.deflatedpickle.haruhi.event.EventSerializeConfig
 import com.github.underscore.lodash.U
@@ -97,6 +98,14 @@ object ConfigUtil {
         EventSerializeConfig.trigger(file)
 
         return file
+    }
+
+    @OptIn(InternalSerializationApi::class)
+    fun serializeConfig(plugin: Plugin) {
+        val id = PluginUtil.pluginToSlug(plugin)
+        serializeConfig(
+            id, File("config/$id.json")
+        )
     }
 
     @InternalSerializationApi
