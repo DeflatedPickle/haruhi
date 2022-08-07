@@ -2,6 +2,7 @@
 
 package com.deflatedpickle.haruhi.api.plugin
 
+import com.deflatedpickle.haruhi.api.Config
 import com.deflatedpickle.haruhi.api.util.ComponentPosition
 import com.deflatedpickle.haruhi.api.util.ComponentPositionNormal
 import com.deflatedpickle.haruhi.component.PluginPanel
@@ -78,5 +79,5 @@ annotation class Plugin(
     /**
      * The config for this plugin
      */
-    val settings: KClass<*> = Nothing::class
+    val settings: KClass<out Config> = Nothing::class
 )

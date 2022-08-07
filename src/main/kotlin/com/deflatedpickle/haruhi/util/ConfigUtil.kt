@@ -2,6 +2,7 @@
 
 package com.deflatedpickle.haruhi.util
 
+import com.deflatedpickle.haruhi.api.Config
 import com.deflatedpickle.haruhi.api.plugin.Plugin
 import com.deflatedpickle.haruhi.event.EventDeserializedConfig
 import com.deflatedpickle.haruhi.event.EventSerializeConfig
@@ -23,23 +24,19 @@ object ConfigUtil {
     /**
      * A map to get config settings for a plugin ID
      */
-    private val idToSettings = mutableMapOf<String, Any>()
+    private val idToSettings = mutableMapOf<String, Config>()
 
     // TODO: getSettingsFile
 
     fun <T : Any> getSettings(author: String, value: String, version: String): T? {
         for (plug in PluginUtil.loadedPlugins) {
             if (plug.author.toLowerCase() == author && plug.value == value) {
-                val symVer = Version.valueOf(plug.version)
+                for ((k, v) in idToSettings) {
+                    val otherAuthor = k.substringBefore("@")
+                    val otherValue = k.substringAfter("@").substringBefore("#")
 
-                if (symVer.satisfies(version)) {
-                    for ((k, v) in idToSettings) {
-                        val otherAuthor = k.substringBefore("@")
-                        val otherValue = k.substringAfter("@").substringBefore("#")
-
-                        if (author == otherAuthor && value == otherValue) {
-                            return v as T
-                        }
+                    if (author == otherAuthor && value == otherValue) {
+                        return v as T
                     }
                 }
             }
@@ -82,16 +79,20 @@ object ConfigUtil {
     }
 
     @InternalSerializationApi
-    fun serializeConfigToInstance(file: File, instance: Any): File? {
+    fun serializeConfigToInstance(file: File, instance: Any): File {
         @Suppress("UNCHECKED_CAST")
         val serializer = instance::class.serializer() as KSerializer<Any>
 
-        val json = Json.Default
+        val json = Json {
+            encodeDefaults = true
+            ignoreUnknownKeys = true
+            prettyPrint = true
+        }
         val jsonData = json.encodeToString(serializer, instance)
 
         val out = FileOutputStream(file, false)
 
-        out.write(U.formatJson(jsonData).toByteArray())
+        out.write(jsonData.toByteArray())
         out.flush()
         out.close()
 
@@ -121,7 +122,7 @@ object ConfigUtil {
 
         val settings = PluginUtil.slugToPlugin[id]!!.settings
 
-        this.idToSettings.getOrPut(file.nameWithoutExtension, { settings.createInstance() })
+        this.idToSettings.getOrPut(file.nameWithoutExtension) { settings.createInstance() }
         val instance = this.idToSettings[file.nameWithoutExtension]!!
 
         this.serializeConfigToInstance(file, instance)
@@ -149,7 +150,7 @@ object ConfigUtil {
         val json = Json.Default
         val jsonObj = json.decodeFromString(serializer, file.readText())
 
-        this.idToSettings[file.nameWithoutExtension] = jsonObj
+        this.idToSettings[file.nameWithoutExtension] = jsonObj as Config
 
         EventDeserializedConfig.trigger(file)
 
