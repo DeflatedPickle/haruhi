@@ -1,9 +1,6 @@
 plugins {
-    id 'java'
-    id 'java-library'
-
     id 'org.jetbrains.kotlin.jvm' version '1.7.0'
-    id 'org.jetbrains.kotlin.plugin.serialization' version '1.5.21'
+    id 'org.jetbrains.kotlin.plugin.serialization' version '1.7.0'
 
     id 'com.diffplug.gradle.spotless' version '3.27.0'
 }
@@ -19,6 +16,7 @@ repositories {
     mavenCentral()
 
     maven { url 'https://jitpack.io' }
+    maven { url 'https://github.com/eugener/oxbow/raw/master/maven/repository' }
 }
 
 dependencies {
@@ -37,7 +35,7 @@ dependencies {
     api 'com.github.Fylipp:easy-events:1.1.0'
 
     // Allows for plugin loading
-    implementation 'io.github.classgraph:classgraph:4.8.147'
+    implementation 'io.github.classgraph:classgraph:4.8.149'
 
     // Fuzzy searching
     implementation 'me.xdrop:fuzzywuzzy:1.4.0'
@@ -47,6 +45,7 @@ dependencies {
 
     // Extended Swing widgets
     implementation 'org.swinglabs:swingx:1.6.1'
+    implementation 'org.oxbow:swing-bits:1.0.0-SNAPSHOT'
 
     // Toasts
     api 'com.deflatedpickle:tosuto'
