@@ -3,6 +3,7 @@
 package com.deflatedpickle.haruhi.util
 
 import io.github.classgraph.ClassGraph
+import io.github.classgraph.ClassGraph.CircumventEncapsulationMethod
 import io.github.classgraph.ScanResult
 import java.io.File
 import java.net.URLClassLoader
@@ -22,6 +23,8 @@ object ClassGraphUtil {
     val classLoader = URLClassLoader(jars.toTypedArray())
 
     init {
+        ClassGraph.CIRCUMVENT_ENCAPSULATION = CircumventEncapsulationMethod.JVM_DRIVER
+
         if (!PluginUtil.isInDev) {
             if (jars.isEmpty()) {
                 this.logger.warn("Found no plugin JARs")

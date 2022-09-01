@@ -36,6 +36,7 @@ dependencies {
 
     // Allows for plugin loading
     implementation 'io.github.classgraph:classgraph:4.8.149'
+    implementation 'io.github.toolfactory:jvm-driver:9.3.0'
 
     // Fuzzy searching
     implementation 'me.xdrop:fuzzywuzzy:1.4.0'

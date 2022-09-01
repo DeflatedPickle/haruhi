@@ -6,14 +6,16 @@ repositories {
     mavenCentral()
 
     maven { url 'https://jitpack.io' }
+    maven { url 'https://github.com/eugener/oxbow/raw/master/maven/repository' }
 }
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-    implementation "org.jetbrains.kotlin:kotlin-reflect:1.3.72"
+    implementation 'org.jetbrains.kotlin:kotlin-reflect:1.7.10'
 
     implementation 'org.dockingframes:docking-frames-common:1.1.1'
     implementation 'org.swinglabs:swingx:1.6.1'
+    implementation 'org.oxbow:swing-bits:1.0.0-SNAPSHOT'
 
     implementation project(':')
 }
