@@ -302,8 +302,8 @@ object PluginUtil {
         }
 
         when (plugin.componentNormalPosition) {
-            ComponentPositionNormal.SOUTH -> this.currentY += plugin.componentWidth
-            ComponentPositionNormal.WEST -> this.currentX += plugin.componentHeight
+            ComponentPositionNormal.SOUTH -> this.currentY += plugin.componentHeight
+            ComponentPositionNormal.WEST -> this.currentX += plugin.componentWidth
         }
 
         panel.componentHolder.dock.setLocation(
