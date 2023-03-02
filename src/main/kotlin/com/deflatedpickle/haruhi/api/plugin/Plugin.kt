@@ -2,7 +2,7 @@
 
 package com.deflatedpickle.haruhi.api.plugin
 
-import com.deflatedpickle.haruhi.api.Config
+import com.deflatedpickle.haruhi.api.config.Config
 import com.deflatedpickle.haruhi.api.util.ComponentPosition
 import com.deflatedpickle.haruhi.api.util.ComponentPositionNormal
 import com.deflatedpickle.haruhi.component.PluginPanel

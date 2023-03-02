@@ -2,12 +2,10 @@
 
 package com.deflatedpickle.haruhi.util
 
-import com.deflatedpickle.haruhi.api.Config
+import com.deflatedpickle.haruhi.api.config.Config
 import com.deflatedpickle.haruhi.api.plugin.Plugin
 import com.deflatedpickle.haruhi.event.EventDeserializedConfig
 import com.deflatedpickle.haruhi.event.EventSerializeConfig
-import com.github.underscore.U
-import com.github.zafarkhaja.semver.Version
 import java.io.File
 import java.io.FileOutputStream
 import kotlin.reflect.full.createInstance
