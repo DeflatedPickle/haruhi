@@ -4,6 +4,9 @@ package com.deflatedpickle.haruhi
 
 import com.deflatedpickle.haruhi.api.plugin.Plugin
 import com.deflatedpickle.haruhi.api.plugin.PluginType
+import com.deflatedpickle.haruhi.event.EventCreateJsonSerializer
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.modules.SerializersModule
 
 @Suppress("unused", "SpellCheckingInspection")
 @Plugin(
@@ -16,4 +19,10 @@ import com.deflatedpickle.haruhi.api.plugin.PluginType
     """,
     type = PluginType.API
 )
-object Haruhi
+object Haruhi {
+    val json = Json {
+        encodeDefaults = true
+        ignoreUnknownKeys = true
+        prettyPrint = true
+    }
+}

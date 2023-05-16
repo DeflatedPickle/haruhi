@@ -2,6 +2,7 @@
 
 package com.deflatedpickle.haruhi.util
 
+import com.deflatedpickle.haruhi.Haruhi
 import com.deflatedpickle.haruhi.api.config.Config
 import com.deflatedpickle.haruhi.api.plugin.Plugin
 import com.deflatedpickle.haruhi.event.EventDeserializedConfig
@@ -81,12 +82,7 @@ object ConfigUtil {
         @Suppress("UNCHECKED_CAST")
         val serializer = instance::class.serializer() as KSerializer<Any>
 
-        val json = Json {
-            encodeDefaults = true
-            ignoreUnknownKeys = true
-            prettyPrint = true
-        }
-        val jsonData = json.encodeToString(serializer, instance)
+        val jsonData = Haruhi.json.encodeToString(serializer, instance)
 
         val out = FileOutputStream(file, false)
 
@@ -145,8 +141,7 @@ object ConfigUtil {
         @Suppress("UNCHECKED_CAST")
         val serializer = instance::class.serializer() as KSerializer<Any>
 
-        val json = Json.Default
-        val jsonObj = json.decodeFromString(serializer, file.readText())
+        val jsonObj = Haruhi.json.decodeFromString(serializer, file.readText())
 
         this.idToSettings[file.nameWithoutExtension] = jsonObj as Config
 
