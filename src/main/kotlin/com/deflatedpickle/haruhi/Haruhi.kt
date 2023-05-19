@@ -20,9 +20,5 @@ import kotlinx.serialization.modules.SerializersModule
     type = PluginType.API
 )
 object Haruhi {
-    val json = Json {
-        encodeDefaults = true
-        ignoreUnknownKeys = true
-        prettyPrint = true
-    }
+    lateinit var json: Json
 }
