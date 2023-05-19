@@ -2,6 +2,7 @@
 
 package com.deflatedpickle.haruhi.util
 
+import com.deflatedpickle.haruhi.Haruhi
 import io.github.classgraph.ClassGraph
 import io.github.classgraph.ClassGraph.CircumventEncapsulationMethod
 import io.github.classgraph.ScanResult
@@ -25,7 +26,7 @@ object ClassGraphUtil {
     init {
         ClassGraph.CIRCUMVENT_ENCAPSULATION = CircumventEncapsulationMethod.JVM_DRIVER
 
-        if (!PluginUtil.isInDev) {
+        if (!Haruhi.isInDev) {
             if (jars.isEmpty()) {
                 this.logger.warn("Found no plugin JARs")
             } else {
@@ -37,7 +38,7 @@ object ClassGraphUtil {
     }
 
     fun refresh() {
-        this.scanResults = if (PluginUtil.isInDev) {
+        this.scanResults = if (Haruhi.isInDev) {
             ClassGraph().enableAllInfo().scan()
         } else {
             ClassGraph()
