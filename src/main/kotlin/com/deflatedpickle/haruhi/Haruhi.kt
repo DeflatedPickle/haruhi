@@ -6,10 +6,13 @@ import bibliothek.gui.dock.common.CControl
 import bibliothek.gui.dock.common.CGrid
 import com.deflatedpickle.haruhi.api.plugin.Plugin
 import com.deflatedpickle.haruhi.api.plugin.PluginType
+import com.deflatedpickle.haruhi.component.PluginPanel
 import com.deflatedpickle.haruhi.event.EventCreateJsonSerializer
+import com.deflatedpickle.haruhi.util.DockUtil
 import com.deflatedpickle.tosuto.ToastWindow
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
+import java.awt.Rectangle
 import javax.swing.JFrame
 import javax.swing.JToolBar
 import kotlin.properties.Delegates

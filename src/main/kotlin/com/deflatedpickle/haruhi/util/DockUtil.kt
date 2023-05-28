@@ -12,11 +12,13 @@ import com.deflatedpickle.haruhi.component.PluginPanel
 import com.deflatedpickle.haruhi.component.PluginPanelHolder
 import com.deflatedpickle.haruhi.event.EventPanelFocusGained
 import com.deflatedpickle.haruhi.event.EventPanelFocusLost
+import java.awt.Panel
+import java.awt.Rectangle
 import javax.swing.JScrollPane
 
 object DockUtil {
-    private var currentX = 0.0
-    private var currentY = 0.0
+    internal var current: String = "Default"
+    internal val categories = mutableMapOf<String, MutableMap<PluginPanel, Rectangle>>()
 
     /**
      * Creates all plugin components
@@ -53,32 +55,20 @@ object DockUtil {
             }
         })
 
-        if (plugin.componentVisible) {
-            Haruhi.grid.add(
-                this.currentX, this.currentY,
-                plugin.componentWidth, plugin.componentHeight,
-                panel.componentHolder.dock
-            )
-        } else {
-            Haruhi.control.addDockable(panel.componentHolder.dock as DefaultSingleCDockable)
-        }
-
-        when (plugin.componentNormalPosition) {
-            ComponentPositionNormal.SOUTH -> this.currentY += plugin.componentHeight
-            ComponentPositionNormal.WEST -> this.currentX += plugin.componentWidth
-        }
-
-        panel.componentHolder.dock.setLocation(
-            when (plugin.componentMinimizedPosition) {
-                ComponentPosition.NORTH -> CLocation.base().minimalNorth()
-                ComponentPosition.EAST -> CLocation.base().minimalEast()
-                ComponentPosition.SOUTH -> CLocation.base().minimalSouth()
-                ComponentPosition.WEST -> CLocation.base().minimalWest()
-            }
-        )
-
-        panel.componentHolder.dock.isVisible = true
-
         return panel
+    }
+
+    fun addToCategory(category: String, panel: PluginPanel, rectangle: Rectangle) {
+        categories.getOrPut(category) { mutableMapOf() }[panel] = rectangle
+    }
+
+    fun deployCategory(category: String) {
+        for ((p, r) in categories[category]!!) {
+            Haruhi.grid.add(
+                r.getX() / 100, r.getY() / 100,
+                r.getWidth() / 100, r.getHeight() / 100,
+                p.componentHolder.dock
+            )
+        }
     }
 }

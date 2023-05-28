@@ -1,13 +1,17 @@
 /* Copyright (c) 2020 DeflatedPickle under the MIT license */
 
+@file:Suppress("LeakingThis")
+
 package com.deflatedpickle.haruhi.component
 
 import com.deflatedpickle.haruhi.api.plugin.Plugin
 import com.deflatedpickle.haruhi.api.redraw.RedrawActive
+import com.deflatedpickle.haruhi.util.DockUtil
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
 import javax.swing.JScrollPane
 import org.jdesktop.swingx.JXPanel
+import java.awt.Rectangle
 import java.awt.event.KeyAdapter
 import java.awt.event.KeyEvent
 
