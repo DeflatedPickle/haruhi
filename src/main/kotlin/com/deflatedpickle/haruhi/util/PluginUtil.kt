@@ -2,34 +2,12 @@
 
 package com.deflatedpickle.haruhi.util
 
-import bibliothek.gui.dock.common.CControl
-import bibliothek.gui.dock.common.CGrid
-import bibliothek.gui.dock.common.CLocation
-import bibliothek.gui.dock.common.DefaultSingleCDockable
-import bibliothek.gui.dock.common.event.CFocusListener
-import bibliothek.gui.dock.common.intern.CDockable
-import com.deflatedpickle.haruhi.Haruhi
 import com.deflatedpickle.haruhi.api.plugin.Plugin
-import com.deflatedpickle.haruhi.api.plugin.PluginType
-import com.deflatedpickle.haruhi.api.util.ComponentPosition
-import com.deflatedpickle.haruhi.api.util.ComponentPositionNormal
-import com.deflatedpickle.haruhi.component.PluginPanel
-import com.deflatedpickle.haruhi.component.PluginPanelHolder
 import com.deflatedpickle.haruhi.event.EventDiscoverPlugin
 import com.deflatedpickle.haruhi.event.EventLoadPlugin
-import com.deflatedpickle.haruhi.event.EventPanelFocusGained
-import com.deflatedpickle.haruhi.event.EventPanelFocusLost
-import com.deflatedpickle.tosuto.ToastWindow
-import com.github.zafarkhaja.semver.Version
 import io.github.classgraph.ClassInfo
-import java.awt.Window
 import java.io.File
-import javax.swing.JScrollPane
-import kotlin.properties.Delegates
-import me.xdrop.fuzzywuzzy.FuzzySearch
 import org.apache.logging.log4j.LogManager
-import javax.swing.JFrame
-import javax.swing.JToolBar
 
 object PluginUtil {
     private val logger = LogManager.getLogger()

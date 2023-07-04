@@ -4,9 +4,12 @@
 
 package com.deflatedpickle.haruhi.component
 
+import ModernDocking.Dockable
+import ModernDocking.DockableStyle
+import ModernDocking.Docking
 import com.deflatedpickle.haruhi.api.plugin.Plugin
 import com.deflatedpickle.haruhi.api.redraw.RedrawActive
-import com.deflatedpickle.haruhi.util.DockUtil
+import com.deflatedpickle.haruhi.util.PluginUtil
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
 import javax.swing.JScrollPane
@@ -14,11 +17,12 @@ import org.jdesktop.swingx.JXPanel
 import java.awt.Rectangle
 import java.awt.event.KeyAdapter
 import java.awt.event.KeyEvent
+import javax.swing.Icon
 
 /**
  * A superclass of [JXPanel] providing utilities for Rawky
  */
-abstract class PluginPanel : JXPanel() {
+abstract class PluginPanel : JXPanel(), Dockable {
     /**
      * The plugin this component belongs to
      */
@@ -28,11 +32,6 @@ abstract class PluginPanel : JXPanel() {
      * The [JScrollPane] this panel was added to
      */
     lateinit var scrollPane: JScrollPane
-
-    /**
-     * A component to hold this one. Helpful for adding toolbars
-     */
-    lateinit var componentHolder: PluginPanelHolder
 
     init {
         this.isOpaque = true
@@ -67,4 +66,20 @@ abstract class PluginPanel : JXPanel() {
 
         super.repaint()
     }
+
+    // Start implementing Dockable
+
+    override fun getPersistentID() = PluginUtil.pluginToSlug(plugin)
+    override fun getType() = 0
+    override fun getTabText() = plugin.value.split("_").joinToString(" ") { it.capitalize() }
+    override fun getIcon() = null
+    override fun isFloatingAllowed() = true
+    override fun shouldLimitToRoot() = false
+    override fun getStyle() = DockableStyle.BOTH
+    override fun canBeClosed() = true
+    override fun allowPinning() = true
+    override fun allowMinMax() = true
+    override fun hasMoreOptions() = false
+
+    // Finish Dockable
 }

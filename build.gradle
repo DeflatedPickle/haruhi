@@ -10,7 +10,6 @@ apply plugin: 'maven-publish'
 group 'com.deflatedpickle'
 archivesBaseName = 'haruhi'
 version '1.5.4'
-sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
@@ -42,7 +41,8 @@ dependencies {
     implementation 'me.xdrop:fuzzywuzzy:1.4.0'
 
     // Docking framework
-    implementation 'org.dockingframes:docking-frames-common:1.1.1'
+    // implementation 'org.dockingframes:docking-frames-common:1.1.1'
+    implementation 'io.github.andrewauclair.ModernDocking:ModernDocking:0.6.0'
 
     // Extended Swing widgets
     implementation 'org.swinglabs:swingx:1.6.1'
@@ -62,13 +62,6 @@ task sourcesJar(type: Jar, dependsOn: classes) {
 
 artifacts {
     archives sourcesJar
-}
-
-compileKotlin {
-    kotlinOptions.jvmTarget = "1.8"
-}
-compileTestKotlin {
-    kotlinOptions.jvmTarget = "1.8"
 }
 
 spotless {

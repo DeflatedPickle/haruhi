@@ -2,22 +2,18 @@
 
 package com.deflatedpickle.haruhi
 
-import bibliothek.gui.dock.common.CControl
-import bibliothek.gui.dock.common.CGrid
+import ModernDocking.Docking
+import ModernDocking.exception.DockingLayoutException
+import ModernDocking.persist.AppState
 import com.deflatedpickle.haruhi.api.plugin.Plugin
 import com.deflatedpickle.haruhi.api.plugin.PluginType
-import com.deflatedpickle.haruhi.component.PluginPanel
-import com.deflatedpickle.haruhi.event.EventCreateJsonSerializer
-import com.deflatedpickle.haruhi.util.DockUtil
 import com.deflatedpickle.tosuto.ToastWindow
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.modules.SerializersModule
-import java.awt.Rectangle
 import javax.swing.JFrame
 import javax.swing.JToolBar
+import javax.swing.SwingUtilities
 import kotlin.properties.Delegates
 
-@Suppress("unused", "SpellCheckingInspection")
 @Plugin(
     value = "haruhi",
     author = "DeflatedPickle",
@@ -38,8 +34,18 @@ object Haruhi {
     lateinit var window: JFrame
     lateinit var toolbar: JToolBar
     lateinit var toastWindow: ToastWindow
-    lateinit var control: CControl
-    lateinit var grid: CGrid
 
     lateinit var json: Json
+
+    init {
+        SwingUtilities.invokeLater {
+            try {
+                AppState.restore()
+            } catch (e: DockingLayoutException) {
+                e.printStackTrace()
+            }
+
+            AppState.setAutoPersist(true)
+        }
+    }
 }
