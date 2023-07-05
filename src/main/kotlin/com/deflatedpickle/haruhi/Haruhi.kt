@@ -2,7 +2,6 @@
 
 package com.deflatedpickle.haruhi
 
-import ModernDocking.Docking
 import ModernDocking.exception.DockingLayoutException
 import ModernDocking.persist.AppState
 import com.deflatedpickle.haruhi.api.plugin.Plugin

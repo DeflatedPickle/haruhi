@@ -11,6 +11,8 @@ group 'com.deflatedpickle'
 archivesBaseName = 'haruhi'
 version '1.5.4'
 
+sourceCompatibility = targetCompatibility = "11"
+
 repositories {
     mavenCentral()
 
