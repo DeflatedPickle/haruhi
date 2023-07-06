@@ -44,7 +44,7 @@ dependencies {
 
     // Docking framework
     // implementation 'org.dockingframes:docking-frames-common:1.1.1'
-    implementation 'io.github.andrewauclair.ModernDocking:ModernDocking:0.6.0'
+    implementation 'io.github.andrewauclair.ModernDocking:docking:'
 
     // Extended Swing widgets
     implementation 'org.swinglabs:swingx:1.6.1'

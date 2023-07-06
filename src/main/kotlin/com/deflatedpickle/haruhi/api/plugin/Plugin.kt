@@ -16,7 +16,6 @@ import kotlin.reflect.KClass
  */
 @Suppress("unused")
 @Target(AnnotationTarget.CLASS)
-// TODO: Write an accumulating system to dock components next to each other
 annotation class Plugin(
     /**
      * The name/id of the plugin
@@ -55,23 +54,6 @@ annotation class Plugin(
      * The component this plugin provides
      */
     val component: KClass<out PluginPanel> = Nothing::class,
-    /**
-     * The side the component will be minimized to
-     */
-    val componentMinimizedPosition: ComponentPosition = ComponentPosition.NORTH,
-    /**
-     * The side the component will be added to
-     */
-    val componentNormalPosition: ComponentPositionNormal = ComponentPositionNormal.WEST,
-    /**
-     * The width of the dock of this component
-     */
-    val componentWidth: Double = 1.0,
-    /**
-     * The height of the dock of this component
-     */
-    val componentHeight: Double = 1.0,
-    val componentVisible: Boolean = true,
     /**
      * The plugin IDs this plugin should load after
      */
