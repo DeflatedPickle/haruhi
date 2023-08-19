@@ -1,8 +1,8 @@
 plugins {
-    id 'org.jetbrains.kotlin.jvm' version '1.8.21'
-    id 'org.jetbrains.kotlin.plugin.serialization' version '1.8.21'
+    id 'org.jetbrains.kotlin.jvm' version '1.9.0'
+    id 'org.jetbrains.kotlin.plugin.serialization' version '1.9.0'
 
-    id 'com.diffplug.gradle.spotless' version '3.27.0'
+    id 'com.diffplug.spotless' version '6.19.0'
 }
 apply plugin: 'kotlin'
 apply plugin: 'maven-publish'
@@ -22,7 +22,7 @@ repositories {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-    implementation 'org.jetbrains.kotlin:kotlin-reflect:1.8.21'
+    implementation 'org.jetbrains.kotlin:kotlin-reflect:1.9.0'
     implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1'
 
     // Logging
@@ -30,7 +30,7 @@ dependencies {
     implementation 'org.apache.logging.log4j:log4j-core:2.18.0'
 
     // Utility
-    implementation 'com.github.javadev:underscore:1.79'
+    implementation 'com.github.javadev:underscore:1.80'
 
     // Events
     api 'com.github.Fylipp:easy-events:1.1.0'
